@@ -35,6 +35,7 @@ public class VoiceToActionService extends AccessibilityService {
     public void printOutAllClickableElement(AccessibilityNodeInfo nodeInfo, int depth, AccessibilityEvent event){
         if (nodeInfo == null) return;
         if(nodeInfo.isClickable()){
+            clickOnGivenButtonByLabel(nodeInfo, "chrome");
             String label = " ";
             if (nodeInfo.getText() != null || nodeInfo.getContentDescription() != null || event.getText().size() != 0) {
                 if (nodeInfo.getText() != null) {
@@ -55,6 +56,17 @@ public class VoiceToActionService extends AccessibilityService {
         for (int i = 0; i < nodeInfo.getChildCount(); ++i) {
             printOutAllClickableElement(nodeInfo.getChild(i), depth + 1, event);
         }
+    }
+
+    public void clickOnGivenButtonByLabel(AccessibilityNodeInfo currentNode,String givenLabel){
+        if (currentNode != null) {
+           if (currentNode.getText() != null){
+                if(givenLabel.equals(currentNode.getText().toString().toLowerCase().trim())) {
+                    currentNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                    Log.d("Service Test", givenLabel + " clicked");
+                }
+        }}
+
     }
 
     public void setTextForAllSubNode(AccessibilityNodeInfo nodeInfo, int depth, AccessibilityEvent event)  {
